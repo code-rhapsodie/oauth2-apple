@@ -2,7 +2,7 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/patrickbussmann/oauth2-apple).
+We accept contributions via Pull Requests on [Github](https://github.com/code-rhapsodie/oauth2-apple).
 
 
 ## Pull Requests
