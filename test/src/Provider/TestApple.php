@@ -12,7 +12,7 @@ use League\OAuth2\Client\Provider\Apple;
 class TestApple extends Apple
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLocalKey(): string
     {
