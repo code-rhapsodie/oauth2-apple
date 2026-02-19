@@ -76,4 +76,4 @@ jobs:
           dependency-versions: '${{ matrix.dependencies }}'
           composer-options: '${{ matrix.composer-options }}'
       - name: Run unit tests
-        run: ./vendor/bin/phpunit --do-not-fail-on-warning --do-not-fail-on-phpunit-warning
+        run: ./vendor/bin/phpunit --do-not-fail-on-phpunit-warning
