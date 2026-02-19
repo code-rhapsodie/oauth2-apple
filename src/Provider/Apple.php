@@ -284,12 +284,10 @@ class Apple extends AbstractProvider
 
     public function getLocalKey(): string
     {
-        $content = file_get_contents($this->keyFilePath);
-
-        if ($content === false) {
+        if (!file_exists($this->keyFilePath)) {
             throw new \InvalidArgumentException('Could not read key file');
         }
 
-        return $content;
+        return file_get_contents($this->keyFilePath);
     }
 }
