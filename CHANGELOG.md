@@ -22,6 +22,7 @@ All Notable changes to `oauth2-apple` will be documented in this file
 
 ### Added
 - Allow firebase/php-jwt ^7.0 [#1](https://github.com/code-rhapsodie/oauth2-apple/pull/1)
+- Tests for php 8.5 [#1](https://github.com/code-rhapsodie/oauth2-apple/pull/1)
 
 ## 0.3.0 - 2024-05-18
 
