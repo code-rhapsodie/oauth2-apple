@@ -8,24 +8,13 @@ use InvalidArgumentException;
 
 class AppleAccessToken extends AccessToken
 {
-    /**
-     * @var string
-     */
-    protected $idToken;
+    protected string $idToken;
+
+    protected string $email;
+
+    protected bool $isPrivateEmail;
 
     /**
-     * @var string
-     */
-    protected $email;
-
-    /**
-     * @var boolean
-     */
-    protected $isPrivateEmail;
-
-    /**
-     * Constructs an access token.
-     *
      * @param Key[] $keys Valid Apple JWT keys
      * @param array $options An array of options returned by the service provider
      *     in the access token request. The `access_token` option is required.
@@ -46,18 +35,9 @@ class AppleAccessToken extends AccessToken
                 try {
                     try {
                         $decoded = JWT::decode($options['id_token'], $key);
-                    } catch (\UnexpectedValueException $e) {
-                        $decodeMethodReflection = new \ReflectionMethod(JWT::class, 'decode');
-                        $decodeMethodParameters = $decodeMethodReflection->getParameters();
-                        // Backwards compatibility for firebase/php-jwt >=5.2.0 <=5.5.1 supported by PHP 5.6
-                        if (array_key_exists(2, $decodeMethodParameters) &&
-                            'allowed_algs' === $decodeMethodParameters[2]->getName()
-                        ) {
-                            $decoded = JWT::decode($options['id_token'], $key, ['RS256']);
-                        } else {
-                            $headers = (object) ['alg' => 'RS256'];
-                            $decoded = JWT::decode($options['id_token'], $key, $headers);
-                        }
+                    } catch (\UnexpectedValueException) {
+                        $headers = (object) ['alg' => 'RS256'];
+                        $decoded = JWT::decode($options['id_token'], $key, $headers);
                     }
                     break;
                 } catch (\Exception $exception) {
@@ -66,9 +46,11 @@ class AppleAccessToken extends AccessToken
                     }
                 }
             }
+
             if (null === $decoded) {
                 throw new \Exception('Got no data within "id_token"!');
             }
+
             $payload = json_decode(json_encode($decoded), true);
 
             $options['resource_owner_id'] = $payload['sub'];
@@ -85,34 +67,25 @@ class AppleAccessToken extends AccessToken
         parent::__construct($options);
 
         if (isset($options['id_token'])) {
-            $this->idToken = $options['id_token'];
+            $this->idToken = (string)$options['id_token'];
         }
 
         if (isset($options['email'])) {
-            $this->email = $options['email'];
+            $this->email = (string)$options['email'];
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getIdToken()
+    public function getIdToken(): string
     {
         return $this->idToken;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isPrivateEmail()
+    public function isPrivateEmail(): bool
     {
         return $this->isPrivateEmail;
     }

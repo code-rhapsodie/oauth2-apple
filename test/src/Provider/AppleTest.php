@@ -2,19 +2,15 @@
 
 namespace League\OAuth2\Client\Test\Provider;
 
+use Firebase\JWT\JWT;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
-use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
 use League\OAuth2\Client\Provider\Apple;
 use League\OAuth2\Client\Provider\AppleResourceOwner;
-use League\OAuth2\Client\Test\KeyDumpSigner;
 use League\OAuth2\Client\Token\AccessToken;
-use League\OAuth2\Client\Token\AppleAccessToken;
 use League\OAuth2\Client\Tool\QueryBuilderTrait;
-use PHPUnit\Framework\TestCase;
 use Mockery as m;
+use PHPUnit\Framework\TestCase;
 
 class AppleTest extends TestCase
 {
@@ -132,23 +128,27 @@ class AppleTest extends TestCase
         ]);
         $provider = m::mock($provider);
 
+        $time = time();
 
-        $configuration = Configuration::forSymmetricSigner(
-            new KeyDumpSigner(),
-            Key\InMemory::plainText('private')
+        $payload = [
+            'iss' => 'test-team-id',
+            'iat' => $time,
+            'exp' => $time + 3600,
+            'aud' => 'https://appleid.apple.com',
+            'sub' => 'test-client',
+        ];
+
+        $jwt = JWT::encode(
+            $payload,
+            'file://' . __DIR__ . '/../private_key.pem',
+            'ES256',
+            'test',
+            [
+                'kid' => 'test',
+                'alg' => 'ES256',
+            ]
         );
 
-        $time = new \DateTimeImmutable();
-        $expiresAt = $time->modify('+1 Hour');
-        $token = $configuration->builder()
-            ->issuedBy('test-team-id')
-            ->permittedFor('https://appleid.apple.com')
-            ->issuedAt($time)
-            ->expiresAt($expiresAt)
-            ->relatedTo('test-client')
-            ->withHeader('alg', 'RS256')
-            ->withHeader('kid', 'test')
-            ->getToken($configuration->signer(), $configuration->signingKey());
 
         $client = m::mock(ClientInterface::class);
         $client->shouldReceive('request')
@@ -161,7 +161,7 @@ class AppleTest extends TestCase
                 'token_type' => 'Bearer',
                 'expires_in' => 3600,
                 'refresh_token' => 'r4a6e8b9c50104b78bc86b0d2649353fa.0.mrwxq.54joUj40j0cpuMANRtRjfg',
-                'id_token' => $token->toString()
+                'id_token' => $jwt
             ])));
         $provider->setHttpClient($client);
 
@@ -384,13 +384,5 @@ class AppleTest extends TestCase
         $this->assertEquals('john@doe.de', $data->getEmail());
         $this->assertNull($data->getLastName());
         $this->assertNull($data->getFirstName());
-    }
-
-    public function testGetConfiguration()
-    {
-        $provider = m::mock(Apple::class)->makePartial();
-        $provider->shouldReceive('getLocalKey')->andReturn(m::mock(Key::class));
-
-        $this->assertInstanceOf(Configuration::class, $provider->getConfiguration());
     }
 }

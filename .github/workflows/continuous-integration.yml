@@ -76,6 +76,4 @@ jobs:
           dependency-versions: '${{ matrix.dependencies }}'
           composer-options: '${{ matrix.composer-options }}'
       - name: Run unit tests
-        run: ./vendor/bin/phpunit --colors=always --coverage-clover build/logs/clover.xml
-      - name: Publish coverage report to Codecov
-        uses: codecov/codecov-action@v4
+        run: ./vendor/bin/phpunit
