@@ -4,15 +4,15 @@ namespace League\OAuth2\Client\Test\Token;
 
 use Firebase\JWT\Key;
 use League\OAuth2\Client\Token\AppleAccessToken;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
 
 class AppleAccessTokenTest extends TestCase
 {
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[PreserveGlobalState(false)]
+    #[RunInSeparateProcess]
     public function testCreatingAccessToken()
     {
         $externalJWTMock = m::mock('overload:Firebase\JWT\JWT');
@@ -65,10 +65,8 @@ class AppleAccessTokenTest extends TestCase
         $this->assertEquals('access_token', $refreshToken->getToken());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[PreserveGlobalState(false)]
+    #[RunInSeparateProcess]
     public function testCreatingAccessTokenFailsBecauseNoDecodingIsPossible()
     {
         $this->expectException('\Exception');
