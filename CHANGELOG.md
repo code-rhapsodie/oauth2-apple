@@ -1,7 +1,7 @@
 # Changelog
 All Notable changes to `oauth2-apple` will be documented in this file
 
-## 0.4.0 - 202X-XX-XX
+## 0.5.0 - 202X-XX-XX
 
 ### Added
 - Nothing
@@ -17,6 +17,11 @@ All Notable changes to `oauth2-apple` will be documented in this file
 
 ### Security
 - Nothing
+
+## 0.4.0 - 2026-02-19
+
+### Added
+- Allow firebase/php-jwt ^7.0 [#1](https://github.com/code-rhapsodie/oauth2-apple/pull/1)
 
 ## 0.3.0 - 2024-05-18
 
