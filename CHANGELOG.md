@@ -18,6 +18,14 @@ All Notable changes to `oauth2-apple` will be documented in this file
 ### Security
 - Nothing
 
+## 0.5.0 - 2026-02-25
+
+### Fixed
+- Updated code base to php 8
+
+### Removed
+- lcobucci/jwt library
+
 ## 0.4.0 - 2026-02-19
 
 ### Added
