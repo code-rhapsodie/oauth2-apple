@@ -12,7 +12,7 @@ class AppleAccessToken extends AccessToken
 
     protected string $email;
 
-    protected bool $isPrivateEmail;
+    protected ?bool $isPrivateEmail = null;
 
     /**
      * @param Key[] $keys Valid Apple JWT keys
@@ -85,7 +85,7 @@ class AppleAccessToken extends AccessToken
         return $this->email;
     }
 
-    public function isPrivateEmail(): bool
+    public function isPrivateEmail(): ?bool
     {
         return $this->isPrivateEmail;
     }
