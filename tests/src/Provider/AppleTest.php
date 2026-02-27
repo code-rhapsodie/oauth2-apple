@@ -19,7 +19,7 @@ class AppleTest extends TestCase
     /**
      * @return Apple
      */
-    private function getProvider()
+    private function getProvider(): Apple
     {
         return new Apple([
             'clientId' => 'mock.example',

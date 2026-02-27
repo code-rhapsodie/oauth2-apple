@@ -2,12 +2,11 @@
 
 namespace League\OAuth2\Client\Test\Token;
 
-use Firebase\JWT\Key;
 use League\OAuth2\Client\Token\AppleAccessToken;
+use Mockery as m;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
-use Mockery as m;
 
 class AppleAccessTokenTest extends TestCase
 {
